@@ -58,7 +58,7 @@ export default function Qr_Camera(){
     }
 
     const getReservData = (name:string) => {
-        console.log(name)
+        
         toast({
             title:"情報取得中",
             description:"情報を取得中です...",
@@ -72,12 +72,12 @@ export default function Qr_Camera(){
             }
         ).then((reservedata) => {
             const reserveData = reservedata.data
-            console.log(reservedata.data)
+            
             if(!reserveData.isAlreadyBuy){
-                console.log(reserveData.allamount)
+                
                 let tmp = ""
                 for(let i=0;i<reserveData.reservegoods.length;i++){
-                    console.log(reserveData.reservegoods[i])
+                    
                     tmp += " , "+reserveData.reservegoods[i]
                 }
                 setReserveGoods(tmp.slice(2,))
@@ -90,7 +90,7 @@ export default function Qr_Camera(){
     }
 
     const setAlreadyBuy = (name:string) => {
-        console.log(name)
+        
         toast({
             title:"変更中",
             description:"購入済みに変更中です...",
@@ -133,7 +133,7 @@ export default function Qr_Camera(){
                 if (imageData) {
                     const code = jsQR(imageData.data, contentWidth, contentHeight)
                     if (code) {
-                        console.log("read!")
+                        
                         QRRead(code.data)
                     }
                 }
@@ -157,7 +157,7 @@ export default function Qr_Camera(){
             }
         })
         .catch(err => {
-            console.log(err)
+            
         })
     },[contentWidth, contentHeight])
 
