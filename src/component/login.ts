@@ -44,7 +44,7 @@ const returnHash = async (string: string): Promise<string> => {
 
 export async function loginFunc(id:string,pass:string) {
     console.log(id,pass)
-    const hashPass = await createHash(id+"@"+pass+"@"+new Date().toLocaleString({timeZone: "Asia/Tokyo"}))
+    const hashPass = await createHash(id+"@"+pass+"@"+new Date())
     console.log(hashPass)
     console.log((await returnHash(hashPass)).split("@"))
     console.log((id == process.env.NEXT_PUBLIC_ID && pass == process.env.NEXT_PUBLIC_PASS))
