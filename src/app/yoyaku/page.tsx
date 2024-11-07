@@ -10,7 +10,7 @@ export default function main(){
     const toast = useToast()
     const toastId = useRef()
     const router = useRouter()
-    const [goods,setGoods] = useState<JSON[]>()
+    const [goods,setGoods] = useState<[]>()
     const [reserveGoodsList,setReserveGoodsList] = useState<[string, number, number][]>([["",0,0]])
     const [reserveGoodsId,setReserveGoodsId] = useState<number[]>([])
     const [userName,setUserName] = useState("")
@@ -111,15 +111,15 @@ export default function main(){
                             let piece = 1
                             for(let i=0;i<goods.length;i++){
                                 list.push(
-                                <Tr key={goods[i].id}>
+                                <Tr key={goods[i][0]}>
                                     <Td>
                                         <Button 
                                         h={"35px"} 
                                         onClick={() => {
                                             !reserveGoodsId.includes(i) ?
-                                                setReserve(i,goods[i].name,piece,goods[i].amount)
+                                                setReserve(i,goods[i][1],piece,goods[i][2])
                                                 :
-                                                delReserve(i,goods[i].name,goods[i].amount)
+                                                delReserve(i,goods[i][1],goods[i][2])
                                             }
                                         } 
                                         color={"white"} 
@@ -134,13 +134,13 @@ export default function main(){
                                         </Button>
                                     </Td>
                                     <Td>
-                                        {goods[i].name}
+                                        {goods[i][1]}
                                     </Td>
                                     <Td>
-                                        {goods[i].amount}円
+                                        {goods[i][2]}円
                                     </Td>
                                     <Td>
-                                    <NumberInput onChange={(e) => {piece=Number(e)}} defaultValue={1} min={1} max={goods[i].maxPiece}>
+                                    <NumberInput onChange={(e) => {piece=Number(e)}} defaultValue={1} min={1} max={goods[i][3]}>
                                         <NumberInputField />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
