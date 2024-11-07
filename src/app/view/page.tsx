@@ -22,9 +22,9 @@ const QRCode: FC<QRCodeProps> = (props) => {
 }
 
 export default function ViewQR() {
-    const searchParams = useSearchParams()
     const [reserveName,setReserveName] = useState("")
     useEffect(() => {
+        const searchParams = useSearchParams()
         setReserveName(String(searchParams.get("reserveID")))
     })
     return (
