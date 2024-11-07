@@ -104,7 +104,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
                     <Input onChange={(e) => setPass(encryptSha256(e.target.value))} type="password" />
                 </FormControl>
                 <Button onClick={async () => {
-                    toastIdRef.current = toast({
+                    toast({
                         title:"ログイン中",
                         status:"loading",
                         isClosable:true,

@@ -53,7 +53,7 @@ export default function main(){
 
     function sendReserve() {
         setIsFuncFinished(false)
-        toastId.current = toast({
+        toast({
             title:"予約中",
             description:"予約操作を受け付け中です。",
             status:"loading",
