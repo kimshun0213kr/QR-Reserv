@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 let http = "http"
 if(process.env.NODE_ENV == "production"){
-  http = https
+  http = "https"
 }
 
 const nextConfig = {
