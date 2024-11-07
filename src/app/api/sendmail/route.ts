@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
 
     const result = transporter.sendMail(toHostMailData, function (err, info) {
         if (err) {
-            console.log(err)
+            
         }
     })
     return NextResponse.json({

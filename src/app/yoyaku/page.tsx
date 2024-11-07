@@ -24,16 +24,16 @@ export default function main(){
     },[])
 
     function setReserve(id:number,goodsName:string,goodsAmount:number,goodsPiece:number){
-        console.log(goodsName,goodsAmount,goodsPiece)
+        
         if((0 < goodsAmount && goodsAmount < 4)){
             setReserveGoodsList([...reserveGoodsList,[goodsName,goodsAmount,goodsPiece*goodsAmount]])
             setReserveGoodsId([...reserveGoodsId,id])
             let tmpAmount = allAmount;
             let tmpIndexAmount = goodsPiece*goodsAmount;
             setAllAmount(tmpAmount+tmpIndexAmount);
-            console.log(reserveGoodsList)
-            console.log(reserveGoodsList.length)
-            console.log(reserveGoodsList[reserveGoodsList.length-1][0])
+            
+            
+            
         } else {
             toast({
                 title:"個数選択エラー",
