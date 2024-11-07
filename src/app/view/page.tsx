@@ -2,7 +2,7 @@
 
 import { Center, Text, VStack } from "@chakra-ui/react";
 import {QRCodeCanvas} from "qrcode.react"
-import {FC} from "react"
+import {FC, useEffect, useState} from "react"
 import { useSearchParams } from "next/navigation";
 
 interface QRCodeProps {
@@ -23,7 +23,10 @@ const QRCode: FC<QRCodeProps> = (props) => {
 
 export default function ViewQR() {
     const searchParams = useSearchParams()
-    const reserveName = searchParams.get("reserveID")
+    const [reserveName,setReserveName] = useState("")
+    useEffect(() => {
+        setReserveName(String(searchParams.get("reserveID")))
+    })
     return (
         <>
         <Center>
