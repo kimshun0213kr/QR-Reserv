@@ -23,8 +23,8 @@ const QRCode: FC<QRCodeProps> = (props) => {
 
 export default function ViewQR() {
     const [reserveName,setReserveName] = useState("")
+    const searchParams = useSearchParams()
     useEffect(() => {
-        const searchParams = useSearchParams()
         setReserveName(String(searchParams.get("reserveID")))
     })
     return (
@@ -32,8 +32,9 @@ export default function ViewQR() {
         <Center>
             <VStack>
                 <Text fontSize={"xl"} fontWeight={"bold"}>物販会場にてスタッフにこのQRコードをお見せください。</Text>
-                {}
+                {reserveName ? 
                 <QRCode reserveName={reserveName!}></QRCode>
+                :null}
             </VStack>
         </Center>
         </>
