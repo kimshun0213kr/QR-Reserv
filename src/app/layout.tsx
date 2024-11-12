@@ -23,7 +23,7 @@ export default function RootLayout({
               </Box>
             </Link>
             {children}
-            <Box bgColor={"gray.100"} textAlign={"center"}marginTop={"10px"} height={"120px"} position={"relative"}>
+            <Box bgColor={"gray.100"} textAlign={"center"}marginTop={"10px"} minHeight={"120px"} position={"relative"}>
               <Center>
                 <AbsoluteCenter>
                   <VStack>
