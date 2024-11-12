@@ -21,7 +21,7 @@ const QRCode: FC<QRCodeProps> = (props) => {
     )
 }
 
-export function ViewQR() {
+const ViewQR = () => {
     const [reserveName,setReserveName] = useState<string>()
     const searchParams = useSearchParams()
     useEffect(() => {
