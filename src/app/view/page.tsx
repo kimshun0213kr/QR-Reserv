@@ -15,26 +15,28 @@ const QRCode: FC<QRCodeProps> = (props) => {
             value={props.reserveName}
             size={256}
             bgColor="#FFFFFF"
-            fgColor="#1e1e1e"
+            fgColor="#1E1E1E"
             level="L"
         />
     )
 }
 
 export default function ViewQR() {
-    const [reserveName,setReserveName] = useState("")
+    const [reserveName,setReserveName] = useState<string>()
     const searchParams = useSearchParams()
     useEffect(() => {
-        setReserveName(String(searchParams.get("reserveID")))
+        setReserveName(searchParams.get("reserveID")?String(searchParams.get("reserveID")):"")
     })
     return (
         <>
         <Center>
             <VStack>
                 <Text fontSize={"xl"} fontWeight={"bold"}>物販会場にてスタッフにこのQRコードをお見せください。</Text>
-                {reserveName ? 
+                {reserveName != "" ? 
                 <QRCode reserveName={reserveName!}></QRCode>
-                :null}
+                :
+                <Text fontSize={"xl"}>クエリが不正です。</Text>
+                }
             </VStack>
         </Center>
         </>
