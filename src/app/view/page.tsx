@@ -26,7 +26,7 @@ const ViewQR = () => {
     const searchParams = useSearchParams()
     useEffect(() => {
         setReserveName(searchParams.get("reserveID")?String(searchParams.get("reserveID")):"")
-    })
+    },[searchParams])
     return (
         <>
         <Center>
