@@ -2,7 +2,7 @@
 
 import { Center, Text, VStack } from "@chakra-ui/react";
 import {QRCodeCanvas} from "qrcode.react"
-import {FC, useEffect, useState} from "react"
+import {FC, Suspense, useEffect, useState} from "react"
 import { useSearchParams } from "next/navigation";
 
 interface QRCodeProps {
@@ -15,27 +15,40 @@ const QRCode: FC<QRCodeProps> = (props) => {
             value={props.reserveName}
             size={256}
             bgColor="#FFFFFF"
-            fgColor="#1e1e1e"
+            fgColor="#1E1E1E"
             level="L"
         />
     )
 }
 
-export default function ViewQR() {
-    const [reserveName,setReserveName] = useState("")
+const ViewQR = () => {
+    const [reserveName,setReserveName] = useState<string>()
+    const searchParams = useSearchParams()
     useEffect(() => {
-        const searchParams = useSearchParams()
-        setReserveName(String(searchParams.get("reserveID")))
-    })
+        setReserveName(searchParams.get("reserveID")?String(searchParams.get("reserveID")):"")
+    },[searchParams])
     return (
         <>
         <Center>
             <VStack>
                 <Text fontSize={"xl"} fontWeight={"bold"}>物販会場にてスタッフにこのQRコードをお見せください。</Text>
-                {}
+                {reserveName != "" ? 
                 <QRCode reserveName={reserveName!}></QRCode>
+                :
+                <Text fontSize={"xl"}>クエリが不正です。</Text>
+                }
             </VStack>
         </Center>
+        </>
+    )
+}
+
+export default function main() {
+    return (
+        <>
+            <Suspense>
+                <ViewQR />
+            </Suspense>
         </>
     )
 }
