@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
         if (err) {
             console.error(err)
         } else {
-            info
+            console.log(info)
         }
     })
     return NextResponse.json({
