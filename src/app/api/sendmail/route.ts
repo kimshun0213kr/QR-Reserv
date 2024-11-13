@@ -25,6 +25,44 @@ const createHash = async (original: string): Promise<string> => {
     return Buffer.concat([encrypted, tag]).toString('base64');
 };
 
+const returnHash = async (string: string): Promise<string> => {
+    const data = Buffer.from(string, 'base64');
+    const encrypted = data.slice(0, -16);
+    const tag = data.slice(-16);
+
+    const decipher = crypto.createDecipheriv(
+        "aes-256-gcm",
+        Buffer.from(hash32key, "hex"),
+        Buffer.from(hashIV, "hex")
+    );
+
+    decipher.setAuthTag(tag);
+
+    const deEncrypted = Buffer.concat([
+        decipher.update(encrypted),
+        decipher.final()
+    ]);
+
+    return deEncrypted.toString("utf-8");
+};
+
+const sendEmail = (data: {
+        from: string | undefined; to: string; subject: string; html: string;
+    }) => {
+    const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        auth: {
+            user: process.env.GMAILUSER,
+            pass: process.env.GMAILPASSWORD,
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+    return transporter.sendMail(data)
+}
+
 export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -44,13 +82,15 @@ export async function POST(req: NextRequest) {
         buyContent += "<tr><th><h2 style=\"margin: 0;\">" +res.data[i][0] + "</h2></th><td><h2 style=\"margin: 0;\">" +  (res.data[i][1]) + "個</h2></td><td><h2 style=\"margin: 0;\">"+res.data[i][2]+"円</h2></td></tr>"
         totalPrice += res.data[i][2]
     }
-    const hashID = await createHash(res.name)
+    const hashID = await createHash(String(res.name)+new Date().getFullYear()+new Date().getMonth()+new Date().getDate()+new Date().getHours()+new Date().getMinutes())
+    const mailAddr = await returnHash(res.email)
+    const reserverName = await returnHash(res.name)
     const toHostMailData = {
         from: process.env.GMAILUSER,
-        to: res.email, // 送信先
+        to: mailAddr, // 送信先
         subject: `【劇団カラクリ】予約完了メール`,
         html: `
-            <p>${res.name} 様 </p>
+            <p>${reserverName} 様 </p>
             <p>グッズの予約ありがとうございます。<br>
             予約商品は以下の通りです。</p>
             <table style=\"margin: 0;\">
@@ -71,14 +111,14 @@ export async function POST(req: NextRequest) {
         `,
     };
 
-    const result = transporter.sendMail(toHostMailData, function (err, info) {
-        if (err) {
-            console.error(err)
-        } else {
-            console.log(info)
+    let response = {message:"",status:200}
+    sendEmail(toHostMailData).then(
+        () => {
+            response = {message:"success",status:200}
         }
+    ).catch((err) => {
+        console.error(err)
+        response = {message:"false",status:500}
     })
-    return NextResponse.json({
-        result
-    })
+    return new Response(JSON.stringify(response.message),{status:response.status})
 }
