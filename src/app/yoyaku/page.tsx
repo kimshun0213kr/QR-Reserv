@@ -4,7 +4,27 @@ import { Box, Button, Center, Checkbox, FormControl, FormHelperText, FormLabel, 
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+const crypto = require("crypto")
 
+const hash32key = String(process.env.NEXT_PUBLIC_hash32);
+const hashIV = String(process.env.NEXT_PUBLIC_hashIV);
+
+const createHash = async (original: string): Promise<string> => {
+    const cipher = crypto.createCipheriv(
+        "aes-256-gcm",
+        Buffer.from(hash32key, 'hex'),
+        Buffer.from(hashIV, 'hex')
+    );
+
+    const encrypted = Buffer.concat([
+        cipher.update(original, 'utf8'),
+        cipher.final(),
+    ]);
+
+    const tag = cipher.getAuthTag();
+
+    return Buffer.concat([encrypted, tag]).toString('base64');
+};
 
 export default function main(){
     const toast = useToast()
@@ -51,7 +71,7 @@ export default function main(){
 
     }
 
-    function sendReserve() {
+    async function sendReserve() {
         setIsFuncFinished(false)
         toast({
             title:"予約中",
@@ -62,8 +82,8 @@ export default function main(){
         })
         axios.post("/api/sendmail",{
             data:reserveGoodsList,
-            name:userName,
-            email:userMail
+            name:await createHash(userName),
+            email:await createHash(userMail)
         }).then(() => {
             axios.post("/api/setReserve",{
                 name:userName,
