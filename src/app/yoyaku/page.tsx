@@ -114,7 +114,7 @@ export default function main(){
             </VStack>
         </Center>
         <TableContainer margin={"auto"}>
-            <Table variant={"simple"}>
+            <Table variant={"simple"} minWidth={"950px"}>
                 <Thead>
                     <Tr>
                         <Th w={"10%"}></Th>
