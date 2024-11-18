@@ -10,7 +10,7 @@ import {
     Heading,
     Input,
     ListItem,
-    Image,
+    Spinner,
     NumberDecrementStepper,
     NumberIncrementStepper,
     NumberInput,
@@ -27,6 +27,7 @@ import {
     UnorderedList, 
     useToast, 
     VStack,
+    HStack,
     } from "@chakra-ui/react";
 import axios from "axios";
 import  {GoodsComponent}  from "@/component/goods";
@@ -56,7 +57,6 @@ const createHash = async (original: string): Promise<string> => {
 
 export default function main(){
     const toast = useToast()
-    const toastId = useRef()
     const router = useRouter()
     const [goods,setGoods] = useState<[]>()
     const [reserveGoodsList,setReserveGoodsList] = useState<[string, number, number][]>([["",0,0]])
@@ -66,10 +66,12 @@ export default function main(){
     const [isFuncFinished,setIsFuncFinished] = useState(true)
     const [allAmount,setAllAmount] = useState(0)
     const [isAccepting,setIsAccepting] = useState(true)
+    const [isLoading,setIsLoading] = useState(true)
     useEffect(() => {
         axios.get("/api/getGoods").then((res) => {
             setGoods(res.data)
-            setIsAccepting(res.data.length() != 0)
+            setIsAccepting(goods != null)
+            setIsLoading(false)
         })
     },[])
 
@@ -132,140 +134,151 @@ export default function main(){
 
     return(
         <>
-        <Center>
-            <VStack>
-                <Heading>商品予約ページ</Heading>
-                <Text>{isAccepting ? "現在予約受付を行っている商品は以下の通りです。":"現在受付を行っている商品はありません。"}</Text>
-            </VStack>
-        </Center>
-        {isAccepting ?
-        <> 
-        <TableContainer marginTop="10px">
-            <Table variant={"simple"} minWidth={"950px"}>
-                <Thead>
-                    <Tr>
-                        <Th w={"10%"}></Th>
-                        <Th w={"50%"}>グッズ名</Th>
-                        <Th w={"20%"}>予約販売価格</Th>
-                        <Th w={"20%"}>購入個数</Th>
-                    </Tr>
-                </Thead>
-                {goods ? 
-                <Tbody fontWeight={"bold"}>
-                    {(
-                        function(){
-                            const list = []
-                            let piece = 1
-                            for(let i=0;i<goods.length;i++){
-                                list.push(
-                                <Tr key={goods[i][0]}>
-                                    <Td>
-                                        <Button 
-                                        h={"35px"} 
-                                        onClick={() => {
-                                            !reserveGoodsId.includes(i) ?
-                                                setReserve(i,goods[i][1],piece,goods[i][2])
-                                                :
-                                                delReserve(i,goods[i][1],goods[i][2])
+            <Center>
+                <VStack>
+                    <Heading>商品予約ページ</Heading>
+                    {!isLoading ? 
+                    <Text fontSize={"2xl"} color="red" fontWeight={"bold"}>{isAccepting ? "現在予約受付を行っている商品は以下の通りです。":"現在受付を行っている商品はありません。"}</Text>
+                    : null}
+                </VStack>
+            </Center>
+            {!isLoading ? 
+                <>
+                {isAccepting ?
+                    <> 
+                        <TableContainer marginTop="10px">
+                            <Table variant={"simple"} minWidth={"950px"}>
+                                <Thead>
+                                    <Tr>
+                                        <Th w={"10%"}></Th>
+                                        <Th w={"50%"}>グッズ名</Th>
+                                        <Th w={"20%"}>予約販売価格</Th>
+                                        <Th w={"20%"}>購入個数</Th>
+                                    </Tr>
+                                </Thead>
+                                {goods ? 
+                                <Tbody fontWeight={"bold"}>
+                                    {(
+                                        function(){
+                                            const list = []
+                                            let piece = 1
+                                            for(let i=0;i<goods.length;i++){
+                                                list.push(
+                                                <Tr key={goods[i][0]}>
+                                                    <Td>
+                                                        <Button 
+                                                        h={"35px"} 
+                                                        onClick={() => {
+                                                            !reserveGoodsId.includes(i) ?
+                                                                setReserve(i,goods[i][1],piece,goods[i][2])
+                                                                :
+                                                                delReserve(i,goods[i][1],goods[i][2])
+                                                            }
+                                                        } 
+                                                        color={"white"} 
+                                                        bgColor={!reserveGoodsId.includes(i)
+                                                            ? "blue.500" 
+                                                            : "red.500"
+                                                        }>
+                                                            {!reserveGoodsId.includes(i) 
+                                                                ?"カートに入れる" 
+                                                                : "カートから削除"
+                                                            }
+                                                        </Button>
+                                                    </Td>
+                                                    <Td>
+                                                        {goods[i][1]} <GoodsComponent name={goods[i][1]} description={goods[i][5]} image={goods[i][4]} />
+                                                    </Td>
+                                                    <Td>
+                                                        {goods[i][2]}円
+                                                    </Td>
+                                                    <Td>
+                                                    <NumberInput onChange={(e) => {piece=Number(e)}} defaultValue={1} min={1} max={goods[i][3]}>
+                                                        <NumberInputField />
+                                                        <NumberInputStepper>
+                                                            <NumberIncrementStepper />
+                                                            <NumberDecrementStepper />
+                                                        </NumberInputStepper>
+                                                    </NumberInput>
+                                                    </Td>
+                                                </Tr>)
                                             }
-                                        } 
-                                        color={"white"} 
-                                        bgColor={!reserveGoodsId.includes(i)
-                                            ? "blue.500" 
-                                            : "red.500"
-                                        }>
-                                            {!reserveGoodsId.includes(i) 
-                                                ?"カートに入れる" 
-                                                : "カートから削除"
+                                            return list
+                                        }()
+                                    )}
+                                </Tbody>
+                                : null }
+                            </Table>
+                        </TableContainer>
+                        <>
+                        {goods ? 
+                            <Center marginTop={"10px"} w="100%">
+                                <Box w="80%" fontSize={"xl"} borderRadius={"xl"} border={"2px dotted pink"} minHeight={"80px"} >
+                                    <Center w="100%">
+                                        <VStack w="100%">
+                                            <Text fontWeight={"bold"}>予約カート内の商品</Text>
+                                            {reserveGoodsList.length > 1 ? 
+                                            <VStack w="100%">
+                                                <UnorderedList w="80%">
+                                                {(
+                                                    function(){
+                                                        const list = []
+                                                        for(let i=2;i<=reserveGoodsList.length;i++){
+                                                            list.push(<ListItem key={i}>{reserveGoodsList[i-1][0]} {String(reserveGoodsList[i-1][1])}個</ListItem>)
+                                                            // setAllAmount(amount[i]*goods[i].amount)
+                                                        }
+                                                        return list
+                                                    }()
+                                                )}
+                                                </UnorderedList>
+                                                <Box w="100%" textAlign={"right"}>
+                                                    <Text marginRight={"10px"}>合計金額 {allAmount}円</Text>
+                                                    <Text marginRight={"10px"} fontSize={"sm"} color="red">物販スペースにてお支払いをお願いします。<br />現金でのみ承っております。ご了承ください。</Text>
+                                                </Box>
+                                                <Box w="75%">
+                                                    <FormControl isRequired>
+                                                        <FormLabel>呼び出し名</FormLabel>
+                                                        <Input onChange={(e) => setUserName(e.target.value)} />
+                                                        <FormHelperText>本名でなくても構いません。</FormHelperText>
+                                                    </FormControl>
+                                                    <FormControl isRequired>
+                                                        <FormLabel>メールアドレス</FormLabel>
+                                                        <Input onChange={(e) => setUserMail(e.target.value)} />
+                                                        <FormHelperText>予約確認メールの送信にのみ使用し、収集しません。</FormHelperText>
+                                                    </FormControl>
+                                                    <Button marginBottom={"5px"}
+                                                        onClick={() => {fillForm && isFuncFinished ?
+                                                            sendReserve()
+                                                            :
+                                                            toast({
+                                                                title:"予約エラー",
+                                                                description:"フォームを全て入力してください。",
+                                                                status:"error"
+                                                            })
+                                                        }}
+                                                        bgColor={fillForm && isFuncFinished ? "blue.500":"gray"}
+                                                    >予約する</Button>
+                                                </Box>
+                                            </VStack>
+                                            : 
+                                            <Text>現在カートに商品はありません。</Text>
                                             }
-                                        </Button>
-                                    </Td>
-                                    <Td>
-                                        {goods[i][1]} <GoodsComponent name={goods[i][1]} description={goods[i][5]} image={goods[i][4]} />
-                                    </Td>
-                                    <Td>
-                                        {goods[i][2]}円
-                                    </Td>
-                                    <Td>
-                                    <NumberInput onChange={(e) => {piece=Number(e)}} defaultValue={1} min={1} max={goods[i][3]}>
-                                        <NumberInputField />
-                                        <NumberInputStepper>
-                                            <NumberIncrementStepper />
-                                            <NumberDecrementStepper />
-                                        </NumberInputStepper>
-                                    </NumberInput>
-                                    </Td>
-                                </Tr>)
-                            }
-                            return list
-                        }()
-                    )}
-                </Tbody>
-                : null }
-            </Table>
-        </TableContainer>
-        <>
-        {goods ? 
-        <Center marginTop={"10px"} w="100%">
-            <Box w="80%" fontSize={"xl"} borderRadius={"xl"} border={"2px dotted pink"} minHeight={"80px"} >
-                <Center w="100%">
-                    <VStack w="100%">
-                        <Text fontWeight={"bold"}>予約カート内の商品</Text>
-                        {reserveGoodsList.length > 1 ? 
-                        <VStack w="100%">
-                            <UnorderedList w="80%">
-                            {(
-                                function(){
-                                    const list = []
-                                    for(let i=2;i<=reserveGoodsList.length;i++){
-                                        list.push(<ListItem key={i}>{reserveGoodsList[i-1][0]} {String(reserveGoodsList[i-1][1])}個</ListItem>)
-                                        // setAllAmount(amount[i]*goods[i].amount)
-                                    }
-                                    return list
-                                }()
-                            )}
-                            </UnorderedList>
-                            <Box w="100%" textAlign={"right"}>
-                                <Text marginRight={"10px"}>合計金額 {allAmount}円</Text>
-                                <Text marginRight={"10px"} fontSize={"sm"} color="red">物販スペースにてお支払いをお願いします。<br />現金でのみ承っております。ご了承ください。</Text>
-                            </Box>
-                            <Box w="75%">
-                                <FormControl isRequired>
-                                    <FormLabel>呼び出し名</FormLabel>
-                                    <Input onChange={(e) => setUserName(e.target.value)} />
-                                    <FormHelperText>本名でなくても構いません。</FormHelperText>
-                                </FormControl>
-                                <FormControl isRequired>
-                                    <FormLabel>メールアドレス</FormLabel>
-                                    <Input onChange={(e) => setUserMail(e.target.value)} />
-                                    <FormHelperText>予約確認メールの送信にのみ使用し、収集しません。</FormHelperText>
-                                </FormControl>
-                                <Button marginBottom={"5px"}
-                                    onClick={() => {fillForm && isFuncFinished ?
-                                        sendReserve()
-                                        :
-                                        toast({
-                                            title:"予約エラー",
-                                            description:"フォームを全て入力してください。",
-                                            status:"error"
-                                        })
-                                    }}
-                                    bgColor={fillForm && isFuncFinished ? "blue.500":"gray"}
-                                >予約する</Button>
-                            </Box>
-                        </VStack>
-                        : 
-                        <Text>現在カートに商品はありません。</Text>
-                        }
-                    </VStack>
-                </Center>
-            </Box>
-        </Center>
-        :
-        null }
-        </>
-        </>
-         :null}
+                                        </VStack>
+                                    </Center>
+                                </Box>
+                            </Center>
+                        :
+                            null }
+                        </>
+                    </>
+                :
+                    null}
+                </>
+            :
+                <>
+                    <HStack><Spinner /><Text fontSize={"2xl"}>データ取得中…</Text></HStack>
+                </>
+            }
         </>
     )
 }
