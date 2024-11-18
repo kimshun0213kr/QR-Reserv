@@ -70,7 +70,7 @@ export default function main(){
     useEffect(() => {
         axios.get("/api/getGoods").then((res) => {
             setGoods(res.data)
-            setIsAccepting(goods != null)
+            setIsAccepting(res.data != null)
             setIsLoading(false)
         })
     },[])
@@ -138,7 +138,7 @@ export default function main(){
                 <VStack>
                     <Heading>商品予約ページ</Heading>
                     {!isLoading ? 
-                    <Text fontSize={"2xl"} color="red" fontWeight={"bold"}>{isAccepting ? "現在予約受付を行っている商品は以下の通りです。":"現在受付を行っている商品はありません。"}</Text>
+                    <Text fontSize={"2xl"} color={isAccepting ? "black" : "red"} fontWeight={"bold"}>{isAccepting ? "現在予約受付を行っている商品は以下の通りです。":"現在受付を行っている商品はありません。"}</Text>
                     : null}
                 </VStack>
             </Center>
