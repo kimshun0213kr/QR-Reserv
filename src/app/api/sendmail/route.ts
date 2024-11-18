@@ -64,17 +64,6 @@ const sendEmail = (data: {
 }
 
 export async function POST(req: NextRequest) {
-    const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        auth: {
-            user: process.env.GMAILUSER,
-            pass: process.env.GMAILPASSWORD,
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
     const res = await req.json()
     let buyContent = ""
     let totalPrice = 0
