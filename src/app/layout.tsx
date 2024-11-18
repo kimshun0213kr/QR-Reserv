@@ -38,7 +38,7 @@ export default function RootLayout({
                   </Center>
                   <Center marginTop={"5px"}>
                     <Text fontSize={"xs"} verticalAlign={"top"}>
-                      © 2023-{String(new Date().getFullYear())}ベレト工務店
+                      ©ベレト工務店
                     </Text>
                   </Center>
                 </Box>
