@@ -1,7 +1,35 @@
 "use client"
 
-import { Box, Button, Center, Checkbox, FormControl, FormHelperText, FormLabel, Heading, HStack, Input, ListItem, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Select, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, UnorderedList, useToast, VStack } from "@chakra-ui/react";
+import { 
+    Box, 
+    Button, 
+    Center,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Heading,
+    Input,
+    ListItem,
+    Image,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    Table, 
+    TableContainer, 
+    Tbody, 
+    Td, 
+    Text, 
+    Th, 
+    Thead, 
+    Tr, 
+    UnorderedList, 
+    useToast, 
+    VStack,
+    } from "@chakra-ui/react";
 import axios from "axios";
+import  {GoodsComponent}  from "@/component/goods";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 const crypto = require("crypto")
@@ -37,23 +65,21 @@ export default function main(){
     const [userMail,setUserMail] = useState("")
     const [isFuncFinished,setIsFuncFinished] = useState(true)
     const [allAmount,setAllAmount] = useState(0)
+    const [isAccepting,setIsAccepting] = useState(true)
     useEffect(() => {
         axios.get("/api/getGoods").then((res) => {
             setGoods(res.data)
+            setIsAccepting(res.data.length() != 0)
         })
     },[])
 
     function setReserve(id:number,goodsName:string,goodsAmount:number,goodsPiece:number){
-        
-        if((0 < goodsAmount && goodsAmount < 4)){
+        if((0 < goodsAmount)){
             setReserveGoodsList([...reserveGoodsList,[goodsName,goodsAmount,goodsPiece*goodsAmount]])
             setReserveGoodsId([...reserveGoodsId,id])
             let tmpAmount = allAmount;
             let tmpIndexAmount = goodsPiece*goodsAmount;
             setAllAmount(tmpAmount+tmpIndexAmount);
-            
-            
-            
         } else {
             toast({
                 title:"個数選択エラー",
@@ -68,7 +94,6 @@ export default function main(){
         setAllAmount(allAmount-deleteElement[2])
         setReserveGoodsList(reserveGoodsList.filter((listIndex,index) => (listIndex[0] != goodsName)))
         setReserveGoodsId(reserveGoodsId.filter((goodsId,index) => goodsId != id))
-
     }
 
     async function sendReserve() {
@@ -110,10 +135,12 @@ export default function main(){
         <Center>
             <VStack>
                 <Heading>商品予約ページ</Heading>
-                <Text>現在予約受付を行っている商品は以下の通りです。</Text>
+                <Text>{isAccepting ? "現在予約受付を行っている商品は以下の通りです。":"現在受付を行っている商品はありません。"}</Text>
             </VStack>
         </Center>
-        <TableContainer margin={"auto"}>
+        {isAccepting ?
+        <> 
+        <TableContainer marginTop="10px">
             <Table variant={"simple"} minWidth={"950px"}>
                 <Thead>
                     <Tr>
@@ -154,7 +181,7 @@ export default function main(){
                                         </Button>
                                     </Td>
                                     <Td>
-                                        {goods[i][1]}
+                                        {goods[i][1]} <GoodsComponent name={goods[i][1]} description={goods[i][5]} image={goods[i][4]} />
                                     </Td>
                                     <Td>
                                         {goods[i][2]}円
@@ -177,8 +204,9 @@ export default function main(){
                 : null }
             </Table>
         </TableContainer>
+        <>
         {goods ? 
-        <Center marginTop={"10px"}>
+        <Center marginTop={"10px"} w="100%">
             <Box w="80%" fontSize={"xl"} borderRadius={"xl"} border={"2px dotted pink"} minHeight={"80px"} >
                 <Center w="100%">
                     <VStack w="100%">
@@ -199,7 +227,7 @@ export default function main(){
                             </UnorderedList>
                             <Box w="100%" textAlign={"right"}>
                                 <Text marginRight={"10px"}>合計金額 {allAmount}円</Text>
-                                <Text marginRight={"10px"} fontSize={"sm"} color="red">旭祭当日の物販スペースにてお支払いをお願いします。<br />現金でのみ承っております。ご了承ください。</Text>
+                                <Text marginRight={"10px"} fontSize={"sm"} color="red">物販スペースにてお支払いをお願いします。<br />現金でのみ承っております。ご了承ください。</Text>
                             </Box>
                             <Box w="75%">
                                 <FormControl isRequired>
@@ -235,6 +263,9 @@ export default function main(){
         </Center>
         :
         null }
+        </>
+        </>
+         :null}
         </>
     )
 }

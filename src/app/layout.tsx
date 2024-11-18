@@ -3,7 +3,7 @@ import "./globals.css";
 import { AbsoluteCenter, Box, Center, ChakraProvider, Link, Text, VStack } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
-  title: "予約システム",
+  title: "劇団カラクリ予約システム",
 };
 
 export default function RootLayout({
@@ -15,26 +15,36 @@ export default function RootLayout({
     <html lang="jp">
       <ChakraProvider>
         <body>
-            <Link href="/" w="100%">
-              <Box bgGradient='linear(to-tl, gray.900, gray.400)'  top={"0px"} position={"sticky"} zIndex={100}>
-                <Center>
-                  <Text color="white" fontSize="xl" fontWeight={"extrabold"}>事前予約システム</Text>
-                </Center>
-              </Box>
-            </Link>
-            {children}
-            <Box bgColor={"gray.100"} textAlign={"center"}marginTop={"10px"} minHeight={"120px"} position={"relative"}>
-              <Center>
-                <AbsoluteCenter>
-                  <VStack>
-                    <Link href="https://x.com/tdu1000ju_pd">劇団カラクリ X(旧twitter) : @tdu1000ju_pd はここをクリック！</Link>
-                    <Link href="https://www.instagram.com/karakuri_tdu/">劇団カラクリ Instagram @karakuri_tduはここをクリック！</Link>
+          <Box w="100%" minH={"100vh"} display={"flex"}>
+            <VStack w="100%">
+              <Link href="/" w="100%">
+                <Box bgGradient='linear(to-tl, gray.900, gray.400)'  top={"0px"} position={"sticky"} zIndex={100}>
+                  <Center>
+                    <Text color="white" fontSize="xl" fontWeight={"extrabold"}>劇団カラクリ予約システム</Text>
+                  </Center>
+                </Box>
+              </Link>
+              {children}
+              <Center w="100%" bgColor={"gray.200"} marginTop={"auto"}>
+                <Box w="90%">
+                  <Center marginTop={"5px"}>
+                    劇団カラクリX(旧Twitter) :<Link href="https://x.com/tdu1000ju_pd"><Text borderBottom="1px solid blue"> @tdu1000ju_pd</Text></Link>
+                  </Center>
+                  <Center marginTop={"5px"}>
+                    劇団カラクリ Instagram :<Link href="https://www.instagram.com/karakuri_tdu/"><Text borderBottom="1px solid blue"> @karakuri_tdu</Text></Link>
+                  </Center>
+                  <Center marginTop={"5px"}>
                     <Link href="/admin" fontSize={"sm"}>管理者用ページ</Link>
-                    <Text fontSize="xs">©ベレト工務店</Text>
-                  </VStack>
-                </AbsoluteCenter>
+                  </Center>
+                  <Center marginTop={"5px"}>
+                    <Text fontSize={"xs"} verticalAlign={"top"}>
+                      © 2023-{String(new Date().getFullYear())}ベレト工務店
+                    </Text>
+                  </Center>
+                </Box>
               </Center>
-            </Box>
+            </VStack>
+          </Box>
         </body>
       </ChakraProvider>
     </html>
