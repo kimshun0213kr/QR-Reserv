@@ -243,7 +243,7 @@ export default function main(){
                                                     </FormControl>
                                                     <FormControl isRequired>
                                                         <FormLabel>メールアドレス</FormLabel>
-                                                        <Input onChange={(e) => setUserMail(e.target.value)} />
+                                                        <Input onChange={(e) => setUserMail(e.target.value)} type="email" />
                                                         <FormHelperText>予約確認メールの送信にのみ使用し、収集しません。</FormHelperText>
                                                     </FormControl>
                                                     <Button marginBottom={"5px"}
