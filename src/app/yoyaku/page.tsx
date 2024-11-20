@@ -132,7 +132,6 @@ export default function main(){
         }).catch((err) => {
             console.error(err)
         })
-        setIsFuncFinished(true)
     }
 
     let fillForm:boolean = reserveGoodsList.length != 0 && userName != "" && userMail != ""
