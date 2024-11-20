@@ -46,7 +46,7 @@ const returnHash = async (string: string): Promise<string> => {
     return deEncrypted.toString("utf-8");
 };
 
-const sendEmail = (data: {
+const sendEmail = async (data: {
         from: string | undefined; to: string; subject: string; html: string;
     }) => {
     const transporter = nodemailer.createTransport({
@@ -60,7 +60,7 @@ const sendEmail = (data: {
             rejectUnauthorized: false
         }
     });
-    const mailData = transporter.sendMail(data,function(err,info) {
+    const mailData = await transporter.sendMail(data,function(err,info) {
         if(err) console.error(err)
         else console.log(err)
     })
@@ -133,5 +133,6 @@ export async function POST(req: NextRequest) {
     
     console.log("Message sent: %s", info.response);
     console.log("finish");
+    return new Response(JSON.stringify({message:"send api completed."}))
 };
 
