@@ -60,8 +60,9 @@ const sendEmail = (data: {
             rejectUnauthorized: false
         }
     });
-    console.log("MAIL SEND FUNC.")
-    return transporter.sendMail(data)
+    const mailData = transporter.sendMail(data)
+    console.log(mailData)
+    return mailData
 }
 
 export async function POST(req: NextRequest) {
@@ -107,11 +108,13 @@ export async function POST(req: NextRequest) {
         (data) => {
             console.log("success")
             status=200
-            return new Response(JSON.stringify({message:"send api completed.",data:String(data),status:200}),{status:200})
+            consoleData = data
         }
     ).catch((err) => {
         console.error(err)
         alert(err)
-        return new Response(JSON.stringify({message:"send api completed.",data:String(err),status:400}),{status:400})
+        consoleData = err
+        status = 400
     })
+    return new Response(JSON.stringify({message:"send api completed.",data:String(consoleData),status:status}),{status:status})
 }
