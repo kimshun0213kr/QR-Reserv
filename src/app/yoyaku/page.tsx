@@ -128,9 +128,13 @@ export default function main(){
                 router.push("/")
             }).catch((err) => {
                 console.error(err)
+                toast.closeAll()
+                setIsFuncFinished(true)
             })
         }).catch((err) => {
             console.error(err)
+            toast.closeAll()
+            setIsFuncFinished(true)
         })
     }
 
