@@ -126,7 +126,15 @@ export default function main(){
                 })
                 setIsFuncFinished(true)
                 router.push("/")
+            }).catch((err) => {
+                console.error(err)
+                toast.closeAll()
+                setIsFuncFinished(true)
             })
+        }).catch((err) => {
+            console.error(err)
+            toast.closeAll()
+            setIsFuncFinished(true)
         })
     }
 
