@@ -49,6 +49,7 @@ const returnHash = async (string: string): Promise<string> => {
 const sendEmail = async (data: {
         from: string | undefined; to: string; subject: string; html: string;
     }) => {
+    console.log(data)
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
