@@ -90,16 +90,24 @@ export async function POST(req:NextRequest) {
             to: mailAddr,
             subject: `【劇団カラクリ】予約完了メール`,
             html: `
-                ${reserverName} 様 
-                グッズの予約ありがとうございます。
-                予約商品は以下の通りです。
-                
-                ${buyContent}
-                
-                合計 ${totalPrice}円
-                商品の代金は、公演当日の物販ブースにてお支払いください。
-                なお、受け取り時に以下のリンクからQRコードの提示をお願いします。
-                QRコードを表示
+                <p>${reserverName} 様 </p>
+                <p>グッズの予約ありがとうございます。<br>
+                予約商品は以下の通りです。</p>
+                <table style=\"margin: 0;\">
+                    <thead>
+                        <th><h4 style=\"margin: 0;\">商品名</h4></th>
+                        <th><h4 style=\"margin: 0;\">個数</h4></th>
+                        <th><h4 style=\"margin: 0;\">合計</h4></th>
+                    </thead>
+                    <tbody>
+                        ${buyContent}
+                    </tbody>
+                </table>
+                <h2>合計 ${totalPrice}円</h2>
+                <p>商品の代金は、公演当日の物販ブースにてお支払いください。</p>
+                <p>なお、受け取り時に以下のリンクからQRコードの提示をお願いします。<br>
+                <a href="https://karakuri-reserve.vercel.app/view?reserveID=${hashID}">QRコードを表示</a>
+                </p>
             `,
         };
 
@@ -110,31 +118,3 @@ export async function POST(req:NextRequest) {
         return new Response(JSON.stringify({ error: "Error sending email" }), { status: 500 });
     }
 }
-
-// export async function POST(req: NextRequest) {
-//     const nodemailer = require("nodemailer");
-//     const mail = process.env.GMAILUSER;
-//     const pass = process.env.GMAILPASSWORD;
-//     const res = await req.json()
-//     const tomailAddr = await returnHash(res.email)
-
-//     const transporter = nodemailer.createTransport({
-//         service: "Gmail",
-//         auth: {
-//             user: mail,
-//             pass: pass,
-//         }
-//     });
-
-//     const info = await transporter.sendMail({
-//         from: mail,
-//         to: mail,
-//         subject: "TestMail",
-//         text: "This is a test mail",
-//     });
-    
-//     console.log("Message sent: %s", info.response);
-//     console.log("finish");
-//     return new Response(JSON.stringify({message:"send api completed."}))
-// };
-
