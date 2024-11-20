@@ -109,7 +109,7 @@ const sendEmail = (data: {
 //     return new Response(JSON.stringify({message:"send api completed."}))
 // }
 
-export default async function POST(req: NextRequest) {
+export async function POST(req: NextRequest) {
     const nodemailer = require("nodemailer");
     const mail = process.env.GMAILUSER;
     const pass = process.env.GMAILPASSWORD;
