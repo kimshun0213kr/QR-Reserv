@@ -76,7 +76,7 @@ export async function POST(req:NextRequest) {
         let totalPrice = 0;
 
         for (let i = 1; i < res.data.length; i++) {
-            buyContent += `${res.data[i][0]} ${res.data[i][1]}個 ${res.data[i][2]}円\n`;
+            buyContent += "<tr><th><h2 style=\"margin: 0;\">" +res.data[i][0] + "</h2></th><td><h2 style=\"margin: 0;\">" +  (res.data[i][1]) + "個</h2></td><td><h2 style=\"margin: 0;\">"+res.data[i][2]+"円</h2></td></tr>";
             totalPrice += res.data[i][2];
         }
 
