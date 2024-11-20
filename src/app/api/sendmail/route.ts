@@ -60,6 +60,7 @@ const sendEmail = (data: {
             rejectUnauthorized: false
         }
     });
+    console.log("MAIL SEND FUNC.")
     return transporter.sendMail(data)
 }
 
