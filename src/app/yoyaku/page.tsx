@@ -126,7 +126,11 @@ export default function main(){
                 })
                 setIsFuncFinished(true)
                 router.push("/")
+            }).catch((err) => {
+                console.error(err)
             })
+        }).catch((err) => {
+            console.error(err)
         })
     }
 
