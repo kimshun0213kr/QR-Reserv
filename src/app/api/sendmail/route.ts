@@ -61,7 +61,7 @@ const sendEmail = (data: {
         }
     });
     const mailData = transporter.sendMail(data)
-    console.log(mailData)
+    console.log("mail func: "+mailData)
     return mailData
 }
 
