@@ -61,12 +61,14 @@ const sendEmail = async (data: {
             rejectUnauthorized: false
         }
     });
-    const mailData = await transporter.sendMail(data,function(err,info) {
-        if(err) console.error(err)
-        else console.log(err)
-    })
-    console.log("mail func: "+mailData)
-    return mailData
+    try {
+        const mailData = await transporter.sendMail(data);
+        console.log("Mail sent: ", mailData);
+        return mailData;
+    } catch (err) {
+        console.error("Error sending email: ", err);
+        throw err;
+    }
 }
 
 export async function POST(req: NextRequest) {
