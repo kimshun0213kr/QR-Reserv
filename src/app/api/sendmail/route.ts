@@ -106,6 +106,7 @@ export async function POST(req: NextRequest) {
         }
     ).catch((err) => {
         console.error(err)
+        alert(err)
 
     })
     return new Response(JSON.stringify({message:"send api completed."}),{status:200})
