@@ -100,6 +100,8 @@ export default function main(){
 
     async function sendReserve() {
         setIsFuncFinished(false)
+        const reserveID = await createHash(crypto.randomBytes(16).toString("base64").substring(0,16)+"-"+String(new Date().getFullYear()+new Date().getMonth()+new Date().getDate()+new Date().getHours()+new Date().getMinutes()+new Date().getSeconds()+new Date().getMilliseconds()))
+        console.log(reserveID)
         toast({
             title:"予約中",
             description:"予約操作を受け付け中です。",
@@ -110,10 +112,11 @@ export default function main(){
         axios.post("/api/sendmail",{
             data:reserveGoodsList,
             name:await createHash(userName),
-            email:await createHash(userMail)
+            email:await createHash(userMail),
+            id:reserveID
         }).then(() => {
             axios.post("/api/setReserve",{
-                name:userName,
+                reserveID:reserveID,
                 data:reserveGoodsList
             }).then(() => {
                 toast.closeAll()
