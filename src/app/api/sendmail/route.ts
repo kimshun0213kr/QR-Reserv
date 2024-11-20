@@ -101,16 +101,19 @@ export async function POST(req: NextRequest) {
     };
 
     let consoleData
+    let status
     sendEmail(toHostMailData).then(
         (data) => {
             console.log("success")
             consoleData = data
+            status=200
         }
     ).catch((err) => {
         console.error(err)
         alert(err)
         consoleData = "ERROR"+err
+        status=400
 
     })
-    return new Response(JSON.stringify({message:"send api completed.",data:consoleData}),{status:200})
+    return new Response(JSON.stringify({message:"send api completed.",data:consoleData}),{status:status})
 }
