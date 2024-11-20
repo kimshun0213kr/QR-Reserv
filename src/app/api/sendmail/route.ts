@@ -116,5 +116,6 @@ export async function POST(req: NextRequest) {
         consoleData = err
         status = 400
     })
+    console.log("API DATA: "+consoleData)
     return new Response(JSON.stringify({message:"send api completed.",data:String(consoleData),status:status}),{status:status})
 }
