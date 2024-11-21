@@ -105,7 +105,7 @@ export async function POST(req:NextRequest) {
                 <h2>合計 ${totalPrice}円</h2>
                 <p>商品の代金は、公演当日の物販ブースにてお支払いください。</p>
                 <p>なお、受け取り時に以下のリンクからQRコードの提示をお願いします。<br>
-                <a href="https://karakuri-reserve.vercel.app/view?reserveID=${hashID}">QRコードを表示</a>
+                <a href="https://karakuri-reserve.vercel.app/view?reserveID=${res.reserveID}">QRコードを表示</a>
                 </p>
             `,
         };

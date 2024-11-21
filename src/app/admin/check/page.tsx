@@ -52,12 +52,10 @@ export default function Qr_Camera(){
     const [userIsAlreadyBuy,setUserIsAlreadyBuy] = useState(false)
 
     const QRRead = async (data:string) => {
-        const userName = await returnHash(data)
-        setQrData(userName)
-        // setQrData("plr34DsdFbbe9aPGxQajqABU9qAxDkb2ScYCP3qBkQ==")
+        setQrData(data)
     }
 
-    const getReservData = (name:string) => {
+    const getReservData = (reserveID:string) => {
         
         toast({
             title:"情報取得中",
@@ -68,7 +66,7 @@ export default function Qr_Camera(){
         })
         axios.post("/api/getReserveData",
             {
-                name:name
+                reserveID:reserveID
             }
         ).then((reservedata) => {
             const reserveData = reservedata.data
@@ -89,7 +87,7 @@ export default function Qr_Camera(){
         })
     }
 
-    const setAlreadyBuy = (name:string) => {
+    const setAlreadyBuy = (reserveID:string) => {
         
         toast({
             title:"変更中",
@@ -100,7 +98,7 @@ export default function Qr_Camera(){
         })
         axios.post("/api/setAlreadyBuy",
             {
-                name:name
+                reserveID:reserveID
             }
         ).then(() => {
             toast({
@@ -133,7 +131,6 @@ export default function Qr_Camera(){
                 if (imageData) {
                     const code = jsQR(imageData.data, contentWidth, contentHeight)
                     if (code) {
-                        
                         QRRead(code.data)
                     }
                 }
@@ -169,7 +166,7 @@ export default function Qr_Camera(){
                 <VisuallyHidden>
                     <canvas ref={canvasRef}></canvas>
                 </VisuallyHidden>
-                <Heading>{qrData} {qrData ? "様" : null}</Heading>
+                <Heading>{qrData ? "ID" : null}{qrData}</Heading>
                 {qrData ? 
                 <>
                     <VStack>
