@@ -45,8 +45,8 @@ export default function Qr_Camera(){
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [qrData,setQrData] = useState("")
 
-    const [contentWidth, setContentWidth] = useState(400)
-    const [contentHeight, setContentHeight] = useState(300)
+    const [contentWidth, setContentWidth] = useState(350)
+    const [contentHeight, setContentHeight] = useState(150)
     const [reserveGoods,setReserveGoods] = useState("")
     const [reserveAmount,setReserveAmount] = useState<number>()
     const [userIsAlreadyBuy,setUserIsAlreadyBuy] = useState(false)
@@ -143,8 +143,8 @@ export default function Qr_Camera(){
                 videoRef.current.onloadedmetadata = () => {
                     if (videoRef.current){
                         videoRef.current.play()
-                        setContentWidth(videoRef.current.clientWidth)
-                        setContentHeight(videoRef.current.clientHeight)
+                        setContentWidth(350)
+                        setContentHeight(150)
                         canvasUpdate()
                         checkImage()
                     }
@@ -152,7 +152,6 @@ export default function Qr_Camera(){
             }
         })
         .catch(err => {
-            
         })
     },[contentWidth, contentHeight])
 
