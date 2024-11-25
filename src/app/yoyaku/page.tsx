@@ -113,10 +113,10 @@ export default function main(){
             data:reserveGoodsList,
             name:await createHash(userName),
             email:await createHash(userMail),
-            id:reserveID
+            id:reserveID.replaceAll("+","")
         }).then(() => {
             axios.post("/api/setReserve",{
-                reserveID:reserveID,
+                reserveID:reserveID.replaceAll("+",""),
                 data:reserveGoodsList
             }).then(() => {
                 toast.closeAll()

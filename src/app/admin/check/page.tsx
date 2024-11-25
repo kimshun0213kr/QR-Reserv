@@ -66,16 +66,13 @@ export default function Qr_Camera(){
         })
         axios.post("/api/getReserveData",
             {
-                reserveID:reserveID
+                reserveID:reserveID,
             }
         ).then((reservedata) => {
             const reserveData = reservedata.data
-            
             if(!reserveData.isAlreadyBuy){
-                
                 let tmp = ""
                 for(let i=0;i<reserveData.reservegoods.length;i++){
-                    
                     tmp += " , "+reserveData.reservegoods[i]
                 }
                 setReserveGoods(tmp.slice(2,))
@@ -132,6 +129,7 @@ export default function Qr_Camera(){
                     const code = jsQR(imageData.data, contentWidth, contentHeight)
                     if (code) {
                         QRRead(code.data)
+                        console.log(code.data)
                     }
                 }
                 setTimeout(()=>{ checkImage() }, 200);
@@ -166,7 +164,7 @@ export default function Qr_Camera(){
                 <VisuallyHidden>
                     <canvas ref={canvasRef}></canvas>
                 </VisuallyHidden>
-                <Heading>{qrData ? "ID" : null}{qrData}</Heading>
+                <Heading>{qrData ? "ID : " : null}{qrData}</Heading>
                 {qrData ? 
                 <>
                     <VStack>
