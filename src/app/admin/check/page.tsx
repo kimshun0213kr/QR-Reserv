@@ -45,8 +45,8 @@ export default function Qr_Camera(){
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [qrData,setQrData] = useState("")
 
-    const [contentWidth, setContentWidth] = useState(500)
-    const [contentHeight, setContentHeight] = useState(500)
+    const [contentWidth, setContentWidth] = useState(400)
+    const [contentHeight, setContentHeight] = useState(300)
     const [reserveGoods,setReserveGoods] = useState("")
     const [reserveAmount,setReserveAmount] = useState<number>()
     const [userIsAlreadyBuy,setUserIsAlreadyBuy] = useState(false)
