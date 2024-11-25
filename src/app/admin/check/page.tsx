@@ -143,8 +143,8 @@ export default function Qr_Camera(){
                 videoRef.current.onloadedmetadata = () => {
                     if (videoRef.current){
                         videoRef.current.play()
-                        setContentWidth(videoRef.current.clientWidth)
-                        setContentHeight(videoRef.current.clientHeight)
+                        setContentWidth(400)
+                        setContentHeight(300)
                         canvasUpdate()
                         checkImage()
                     }
@@ -152,7 +152,6 @@ export default function Qr_Camera(){
             }
         })
         .catch(err => {
-            
         })
     },[contentWidth, contentHeight])
 
