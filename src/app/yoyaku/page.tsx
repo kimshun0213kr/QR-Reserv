@@ -162,9 +162,10 @@ export default function main(){
                                 <Thead>
                                     <Tr>
                                         <Th w={"10%"}></Th>
-                                        <Th w={"50%"}>グッズ名</Th>
-                                        <Th w={"20%"}>予約販売価格</Th>
-                                        <Th w={"20%"}>購入個数</Th>
+                                        <Th w={"45%"}>グッズ名</Th>
+                                        <Th w={"15%"}>予約期限</Th>
+                                        <Th w={"15%"}>予約販売価格</Th>
+                                        <Th w={"15%"}>購入個数</Th>
                                     </Tr>
                                 </Thead>
                                 {goods ? 
@@ -174,6 +175,7 @@ export default function main(){
                                             const list = []
                                             let piece = 1
                                             for(let i=0;i<goods.length;i++){
+                                                const limit = new Date(new Date(goods[i][6]).setHours(new Date(goods[i][6]).getHours()-9))
                                                 list.push(
                                                 <Tr key={goods[i][0]}>
                                                     <Td>
@@ -199,6 +201,9 @@ export default function main(){
                                                     </Td>
                                                     <Td>
                                                         {goods[i][1]} <GoodsComponent name={goods[i][1]} description={goods[i][5]} image={goods[i][4]} />
+                                                    </Td>
+                                                    <Td>
+                                                        {String(limit.getFullYear()+"/"+(limit.getMonth()+1)+"/"+limit.getDate()+" "+limit.getHours()+":"+limit.getMinutes())}
                                                     </Td>
                                                     <Td>
                                                         {goods[i][2]}円
