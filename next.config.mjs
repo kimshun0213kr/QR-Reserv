@@ -9,6 +9,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/api/createGoods',
+        destination: http+"://"+process.env.NEXT_PUBLIC_API_DOMAIN+"/api/createGoods",
+      },
+      {
         source: '/api/getReserveData',
         destination: http+"://"+process.env.NEXT_PUBLIC_API_DOMAIN+"/api/getReserveData",
       },

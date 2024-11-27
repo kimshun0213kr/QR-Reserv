@@ -17,6 +17,7 @@ import {ExternalLinkIcon} from "@chakra-ui/icons"
 
 export function GoodsComponent({name,description,image}:{name:string,description:string,image:string}){
     const {isOpen,onOpen,onClose} = useDisclosure()
+    const fileHost = process.env.NEXT_PUBLIC_IMAGE_HOST
     return(
         <>
         <ExternalLinkIcon onClick={onOpen} />
@@ -26,7 +27,7 @@ export function GoodsComponent({name,description,image}:{name:string,description
             <ModalHeader>{name}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                {image ? <Image src={image} /> : null}
+                {image ? <Image src={fileHost+image} /> : null}
                 {description}
             </ModalBody>
 
